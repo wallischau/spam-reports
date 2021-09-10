@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import API from "./apiAccess";
-import { Col, Row, Container } from "./Grid";
+import { Row, Container } from "./Grid";
 import { List } from "./List";
 
 class SpamReport extends Component {

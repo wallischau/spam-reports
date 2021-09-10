@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const PORT = 4000;
-const reportItems = require('./data/reports.json');
 const fs = require('fs');
 
 app.use((req, res, next) => {
@@ -18,54 +17,63 @@ app.get('/', function (req, res) {
 });
 
 app.get('/reports/get-spam-items', (req, res) => {
-    const items = Object.values(reportItems);
-    //send filtered info: id, type, state, message
-    const spamItems = filterSpamItems(reportItems.elements);
-    const filteredSpamItems = filterNeededFields(spamItems);
-    res.send(filteredSpamItems);
+  //read json file which stores all report items
+  const reportItems = readJsonDataFile('./src/data/reports.json');
+  //send filtered info: id, type, state, message
+  const spamItems = filterSpamItems(reportItems.elements);
+  const filteredSpamItems = filterNeededFields(spamItems);
+  res.send(filteredSpamItems);
 });
 
+
 app.put('/reports/block-spam-item', (req, res) => {
-  console.log('301 req', req.body);
+  const reportItems = readJsonDataFile('./src/data/reports.json');``
   const id = req.body.id;
   const itemIdx = reportItems.elements.findIndex(item => item.id === id);
-  //replace state of item
+  //update the state of item with 'BLOCKED'
   if(itemIdx > -1) {
     reportItems.elements[itemIdx].state = 'BLOCKED';
   }
-  //save the json to file
+  //save the change to file
   const reportItemString = JSON.stringify(reportItems, null, 4);
   fs.writeFile('./src/data/reports.json', reportItemString, (err) => {
     if (err) throw err;
   });
-
-  console.log('item', itemIdx);
   res.send(`This spam id=${id} is blocked`);
 });
 
 app.put('/reports/:reportId', (req, res) =>{
-  console.log(' 401 req.params', req.params);
-  console.log('402 req.body', req.body);
+  const reportItems = readJsonDataFile('./src/data/reports.json');``
   const data = req.body;
   const id = req.params.reportId;
   const itemIdx = reportItems.elements.findIndex(item => item.id === id);
-  //replace state of item
+  //update the state of item to 'CLOSED'
   if(itemIdx > -1) {
     reportItems.elements[itemIdx].state = 'CLOSED';
   }
-  //save the json to file
+  //save the change to file
   const reportItemString = JSON.stringify(reportItems, null, 4);
   fs.writeFile('./src/data/reports.json', reportItemString, (err) => {
     if (err) throw err;
   });
-  
-
-
-
   res.send(req.params);
 });
 
 
+//read json file and return the json format
+const readJsonDataFile = (file) => {
+  let rawData;
+  let jsonData;
+  try {
+    rawData = fs.readFileSync(file); 
+  } catch(err) {
+    throw err;
+  }
+  jsonData = JSON.parse(rawData);
+  return jsonData;
+};
+
+//get selected fields
 const filterNeededFields = ( items ) => {
   return items.map(item => (
     { 
@@ -77,9 +85,12 @@ const filterNeededFields = ( items ) => {
   ));
 }
 
+//filter in SPAM items which are not closed
 const filterSpamItems = ( items ) => {
   return items.filter(entry => entry.payload.reportType === 'SPAM' && entry.state !== 'CLOSED');
 }
+
+
 app.listen(PORT, function () {
     console.log(`Spam report API ready on http://localhost:${PORT}`);
 });
