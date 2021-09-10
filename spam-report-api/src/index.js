@@ -47,9 +47,9 @@ app.put('/reports/:reportId', (req, res) =>{
   const data = req.body;
   const id = req.params.reportId;
   const itemIdx = reportItems.elements.findIndex(item => item.id === id);
-  //update the state of item to 'CLOSED'
+  //update the state of item 
   if(itemIdx > -1) {
-    reportItems.elements[itemIdx].state = 'CLOSED';
+    reportItems.elements[itemIdx].state = data.ticketState;
   }
   //save the change to file
   const reportItemString = JSON.stringify(reportItems, null, 4);

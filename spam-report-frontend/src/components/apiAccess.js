@@ -18,7 +18,6 @@ export default {
   
   //block given item
   blockSpamItem: async function (id) {
-    console.log('myid', id);
     const res = await axios.put('/reports/block-spam-item', {id: id});
     return res;
   }
