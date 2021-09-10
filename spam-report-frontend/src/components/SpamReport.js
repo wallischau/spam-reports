@@ -17,12 +17,6 @@ class SpamReport extends Component {
     this.loadSpamItems();
   }
 
-  componentWillUnmount() {
-    this.setState = (state,callback)=>{
-      return;
-  };
-}
-
   /* Description: fetch items */
   loadSpamItems = () => {
     API.getSpamItems()
@@ -45,8 +39,6 @@ class SpamReport extends Component {
 
     spamItems.forEach(item => {
       if (item) {
-
-
         rowOfSpamItems.push(
           <div key={'div-' + item.id}>
             <Row key={item.id + '-data'}>

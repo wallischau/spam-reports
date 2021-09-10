@@ -4,7 +4,7 @@ import { Col, Row } from "../Grid";
 import API from "../apiAccess";
 
 
-
+//set item to 'BLOCKED' and disable the button
 const handleBlockButtonClick = (id, setDisable, setItemStatus) => {
   API.blockSpamItem(id)
   .then(res => {
@@ -14,6 +14,7 @@ const handleBlockButtonClick = (id, setDisable, setItemStatus) => {
   .catch(err => console.log(err));
 };
 
+//set item to 'RESOLVED' and remove from view
 const handleResolveButtonClick = (id, setItemStatus, setShowItem) => {
   API.resolveSpamItem(id)
   .then(res => {
@@ -29,6 +30,7 @@ export const List = (props) => {
   const [itemStatus, setItemStatus ] = React.useState(item.state);
   const [showItem, setShowItem] = React.useState(true);
 
+  //each row is a spam item with selected details
   const itemShown = [
     <Row key={item.id + 'row-1'}>
       <Col key={item.id+'col-1'} size='sm-3'>id: {item.id}</Col>
@@ -43,7 +45,6 @@ export const List = (props) => {
     <Row key={item.id+'row-3'}>
       <Col key={item.id+'col-7'} size='sm-3'><a>Details</a> </Col>
     </Row>
-     
   ];
 
   return (
