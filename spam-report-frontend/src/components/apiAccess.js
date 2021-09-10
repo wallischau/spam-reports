@@ -5,14 +5,18 @@ const data = {
 };
 
 export default {
-  // Gets all items 
+  // Gets all spam items 
   getSpamItems: function () {
     return axios.get('/reports/get-spam-items');
   },
-  resolveSpamItem: async function (id, body) {
+  
+  //close given item
+  resolveSpamItem: async function (id) {
     const res = await axios.put(`/reports/${id}`, data );
     return res;
   },
+  
+  //block given item
   blockSpamItem: async function (id) {
     console.log('myid', id);
     const res = await axios.put('/reports/block-spam-item', {id: id});

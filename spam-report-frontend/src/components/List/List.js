@@ -12,14 +12,11 @@ const handleBlockButtonClick = (id, setDisable, setItemStatus) => {
     setItemStatus('BLOCKED');
   })
   .catch(err => console.log(err));
-console.log('click', id);
 };
 
 const handleResolveButtonClick = (id, setItemStatus, setShowItem) => {
-  console.log('click', id);
   API.resolveSpamItem(id)
   .then(res => {
-    console.log('205', res.data);
     setItemStatus('CLOSED');
     setShowItem(false);
   })
@@ -28,7 +25,6 @@ const handleResolveButtonClick = (id, setItemStatus, setShowItem) => {
 
 export const List = (props) => {
   const item = props.data;
-  console.log('203 items', item);
   const [disable, setDisable] = React.useState(false);
   const [itemStatus, setItemStatus ] = React.useState(item.state);
   const [showItem, setShowItem] = React.useState(true);
