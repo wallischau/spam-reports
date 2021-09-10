@@ -1,0 +1,19 @@
+{
+  "name": "spam-report-api",
+  "version": "1.0.1",
+  "description": "Spam report processing.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "nodemon --inspect --ignore src/data/ src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Wallis Chau",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "axios": "^0.21.4",
+    "nodemon": "^2.0.12"
+  }
+}
